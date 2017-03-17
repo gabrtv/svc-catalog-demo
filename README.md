@@ -9,16 +9,11 @@ The walkthrough will install:
 
 ## Setup Instructions
 
-Install a Kubernetes cluster, then:
+Install a Kubernetes cluster and make sure Helm is ready (i.e. `helm init`).
+
+### Install the Service Catalog
 
 ```console
-helm init
-cd $GOPATH/src/github.com/gabrtv/svc-catalog-demo
-```
-
-### Install Service Catalog
-
-```
 helm install \
     --namespace=steward --name=svc-catalog \
     --set registry=quay.io/kubernetes-service-catalog,version=34b14fe,storageType=tpr,debug=true,insecure=true,imagePullPolicy=IfNotPresent,globalNamespace=steward \
@@ -27,7 +22,7 @@ helm install \
 
 ### Install the S3 Provider
 
-```
+```console
 # provide aws creds that have full S3 bucket rights and full IAM rights
 export STEWARD_ACCESS_KEY=<aws-access-key>
 export STEWARD_SECRET_KEY=<aws-secret-key>
@@ -38,13 +33,13 @@ helm install s3-provider --namespace=steward --name=s3-provider \
 
 ### Install the S3 Consumer
 
-```
+```console
 helm install s3-consumer --namespace=steward --name=s3-consumer
 ```
 
 ### Cleanup
 
-```
+```console
 helm delete --purge svc-catalog
 helm delete --purge s3-provider
 helm delete --purge s3-consumer
