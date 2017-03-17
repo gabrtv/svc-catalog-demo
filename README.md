@@ -28,8 +28,9 @@ helm install \
 ### Install the S3 Provider
 
 ```
-source ~/Desktop/steward-iam.txt
-echo $STEWARD_ACCESS_KEY
+# provide aws creds that have full S3 bucket rights and full IAM rights
+export STEWARD_ACCESS_KEY=<aws-access-key>
+export STEWARD_SECRET_KEY=<aws-secret-key>
 
 helm install s3-provider --namespace=steward --name=s3-provider \
     --set AdminAwsAccessKeyId=${STEWARD_ACCESS_KEY},AdminAwsSecretAccessKey=${STEWARD_SECRET_KEY}
