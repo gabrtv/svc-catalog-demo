@@ -1,0 +1,14 @@
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Binding
+metadata:
+  name: "{{.Release.Name}}-binding"
+  namespace: {{.Release.Namespace | quote}}
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-binding"
+spec:
+  instanceRef:
+    name: "{{if .Values.InstanceName}}{{.Values.InstanceName}}{{else}}{{.Release.Name}}-instance{{end}}"
+  secretName: {{.Values.SecretName | quote}}

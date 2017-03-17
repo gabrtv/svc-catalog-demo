@@ -1,0 +1,22 @@
+# Default values for s3-broker
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+ServicePort: 80
+ContainerPort: 8080
+Replicas: 1
+
+BrokerImage: "lachlanevenson/s3-broker"
+BrokerImageTag: "latest"
+BrokerImagePullPolicy: "Always"
+CfBrokerScheme: "http"
+CfBrokerPort: 3000
+CfBrokerUsername: "username"
+CfBrokerPassword: "password"
+
+CfBrokerServiceId: "98FF26D0-2E01-11E5-9184-FEFF819CDC9F"
+CfBrokerPlanId: "EAAD05D8-2E01-11E5-9184-FEFF819CDC9F"
+
+AdminAwsAccessKeyId: ""
+AdminAwsSecretAccessKey: ""

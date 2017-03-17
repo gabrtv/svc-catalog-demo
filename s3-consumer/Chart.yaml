@@ -1,0 +1,6 @@
+name: sample-s3-uploader
+version: 0.1.0
+description: sample-s3-uploader Helm chart for Kubernetes.
+maintainers:
+  - name: Lachlan Evenson
+    email: lachlan@deis.com

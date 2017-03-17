@@ -1,0 +1,14 @@
+# Default values for sample-s3-uploader.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+Name: s3-uploader
+Component: "s3-uploader"
+Image: "lachlanevenson/sample-s3-uploader"
+ImageTag: "latest"
+ImagePullPolicy: "Always"
+SecretName: "steward-demo"
+
+ServiceClass: aws-s3
+ServicePlanName: default

@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "{{ .Release.Name }}-broker-creds"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-broker-server"
+data:
+  aws-access-key-id: {{ default "" .Values.AdminAwsAccessKeyId | b64enc | quote }}
+  aws-secret-access-key: {{ default "" .Values.AdminAwsSecretAccessKey | b64enc | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-broker-server"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-broker-server"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  ports:
+  - port: {{.Values.CfBrokerPort}}
+    targetPort: {{.Values.CfBrokerPort}}
+  selector:
+    component: "{{.Release.Name}}-broker-server"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-broker-server"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-broker-server"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  replicas: {{ default 1 .Values.Replicas }}
+  template:
+    metadata:
+      name: "{{ printf "%s-broker-server" .Release.Name | trunc 24 }}"
+      labels:
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        component: "{{.Release.Name}}-broker-server"
+      annotations:
+        "helm.sh/created": {{.Release.Time.Seconds | quote }}
+    spec:
+      containers:
+      - name: "{{ printf "%s-broker-server" .Release.Name | trunc 24 }}"
+        image: "{{.Values.BrokerImage}}:{{.Values.BrokerImageTag}}"
+        imagePullPolicy: "{{.Values.BrokerImagePullPolicy}}"
+        command: ["/s3-broker", "--config=/config/broker-config.json"]
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-broker-creds"
+              key: aws-access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-broker-creds"
+              key: aws-secret-access-key
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ .Release.Name }}-broker-config"
