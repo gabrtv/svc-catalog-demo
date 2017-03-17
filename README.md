@@ -1,6 +1,12 @@
 # Service Catalog Demo
 
-This repo privates 
+This repo provides a walkthrough of the Service Catalog using only Helm charts.
+The walkthrough will install:
+
+ * Service Catalog API Server and Controller
+ * An S3 Provider which includes a CF Broker for S3 bucket management
+ * An S3 Consumer which uses the Broker's bindings and uploads a file to S3
+
 ## Setup Instructions
 
 Install a Kubernetes cluster, then:
