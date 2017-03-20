@@ -5,7 +5,7 @@
 
 Name: s3-uploader
 Component: "s3-uploader"
-Image: "lachlanevenson/sample-s3-uploader"
+Image: "quay.io/deis/s3-uploader"
 ImageTag: "latest"
 ImagePullPolicy: "Always"
 SecretName: "steward-demo"
