@@ -1,0 +1,13 @@
+# Default values for s3-consumer.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+Name: s3-uploader
+Component: "s3-uploader"
+Image: "quay.io/deis/s3-uploader"
+ImageTag: "latest"
+ImagePullPolicy: "Always"
+
+ServiceClass: minio
+ServicePlanName: default

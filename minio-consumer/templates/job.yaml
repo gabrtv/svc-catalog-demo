@@ -1,0 +1,45 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{.Release.Name}}"
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{.Release.Name}}-{{.Values.Component}}"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  template:
+    metadata:
+        name: "{{.Release.Name}}"
+        labels:
+            heritage: {{.Release.Service | quote }}
+            release: {{.Release.Name | quote }}
+            chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+            component: "{{.Release.Name}}-{{.Values.Component}}"
+        annotations:
+            "helm.sh/created": {{.Release.Time.Seconds | quote }}
+    spec:
+      containers:
+      - name: "{{.Release.Name}}"
+        image: "{{.Values.Image}}:{{.Values.ImageTag}}"
+        imagePullPolicy: "{{.Values.ImagePullPolicy}}"
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Name}}-secret"
+              key: username
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Name}}-secret"
+              key: password
+        - name: S3_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Name}}-secret"
+              key: name
+      restartPolicy: Never

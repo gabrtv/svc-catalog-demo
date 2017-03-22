@@ -11,4 +11,4 @@ metadata:
 spec:
   instanceRef:
     name: "{{if .Values.InstanceName}}{{.Values.InstanceName}}{{else}}{{.Release.Name}}-instance{{end}}"
-  secretName: {{.Values.SecretName | quote}}
+  secretName: "{{.Release.Name}}-secret"

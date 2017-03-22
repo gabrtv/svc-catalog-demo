@@ -7,7 +7,6 @@ metadata:
     heritage: {{.Release.Service | quote }}
     release: {{.Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
-    component: "{{.Release.Name}}-{{.Values.Component}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
@@ -18,7 +17,6 @@ spec:
             heritage: {{.Release.Service | quote }}
             release: {{.Release.Name | quote }}
             chart: "{{.Chart.Name}}-{{.Chart.Version}}"
-            component: "{{.Release.Name}}-{{.Values.Component}}"
         annotations:
             "helm.sh/created": {{.Release.Time.Seconds | quote }}
     spec:
@@ -30,16 +28,16 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: "{{.Values.SecretName}}"
+              name: "{{.Release.Name}}-secret"
               key: username
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: "{{.Values.SecretName}}"
+              name: "{{.Release.Name}}-secret"
               key: password
         - name: S3_BUCKET_NAME
           valueFrom:
             secretKeyRef:
-              name: "{{.Values.SecretName}}"
+              name: "{{.Release.Name}}-secret"
               key: name
       restartPolicy: Never
