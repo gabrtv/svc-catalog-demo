@@ -9,5 +9,5 @@ metadata:
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     component: "{{.Release.Name}}-instance"
 spec:
-  serviceClassName: {{ default "aws-s3" .ValuesServiceClass | quote}}
-  planName: {{ default "default" .ValuesServicePlanName | quote}}
+  serviceClassName: {{ default "minio" .Values.ServiceClass | quote}}
+  planName: {{ default "default" .Values.ServicePlanName | quote}}
