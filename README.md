@@ -1,11 +1,7 @@
 # Service Catalog Demo
 
 This repo provides a walkthrough of the Service Catalog using only Helm charts.
-The walkthrough will install:
-
- * Service Catalog API Server and Controller
- * An S3 Provider which includes a CF Broker for S3 bucket management
- * An S3 Consumer which uses the Broker's bindings and uploads a file to S3
+Before proceeding to Demo Instructions, make sure you perform the Setup Instructions below.
 
 ## Demo Instructions
 
@@ -19,7 +15,7 @@ helm install manual-s3-consumer --namespace=steward --name=manual-s3-consumer \
 ### 2. Automatic S3 Consumer
 
 ```console
-helm install auto-s3-consumer --namespace=steward --name=auto-s3-consumer
+helm install s3-consumer --namespace=steward --name=s3-consumer
 ```
 
 ### 3. Install the Minio Provider
@@ -47,7 +43,7 @@ aws s3 ls | grep cf- | awk {'print $3'} | xargs -t -I{} aws s3 rb s3://{} --forc
 helm delete --purge svc-catalog
 helm delete --purge s3-provider
 helm delete --purge manual-s3-consumer
-helm delete --purge auto-s3-consumer
+helm delete --purge s3-consumer
 helm delete --purge minio-provider
 helm delete --purge minio-consumer
 kubectl delete ns steward
@@ -64,10 +60,6 @@ helm install svc-catalog \
 ### Install the S3 Provider
 
 ```console
-# provide aws creds that have full S3 bucket rights and full IAM rights
-export STEWARD_ACCESS_KEY=<aws-access-key>
-export STEWARD_SECRET_KEY=<aws-secret-key>
-
 helm install s3-provider --namespace=steward --name=s3-provider \
     --set AdminAwsAccessKeyId=${STEWARD_ACCESS_KEY},AdminAwsSecretAccessKey=${STEWARD_SECRET_KEY}
 ```
