@@ -42,4 +42,9 @@ spec:
             secretKeyRef:
               name: "{{.Release.Name}}-secret"
               key: name
+        - name: S3_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Name}}-secret"
+              key: endpoint
       restartPolicy: Never
